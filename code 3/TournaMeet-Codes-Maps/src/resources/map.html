@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>OpenStreetMap</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<style>
+  html, body, #map { height: 100%; margin: 0; padding: 0; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var map = L.map('map').setView([16.41579253398022, 120.56148233568992], 16);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19}).addTo(map);
+
+  var marker;
+
+  function setMarker(lat, lon){
+      if(marker) map.removeLayer(marker);
+      marker = L.marker([lat, lon]).addTo(map);
+      map.setView([lat, lon], 18);
+  }
+
+  function enablePicker(callback){
+      map.on('click', function(e){
+          if(marker) map.removeLayer(marker);
+          marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+          if(callback) callback(e.latlng.lat, e.latlng.lng);
+      });
+  }
+</script>
+</body>
+</html>
